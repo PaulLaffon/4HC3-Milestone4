@@ -1,0 +1,9 @@
+﻿<Application x:Class="Milestone4.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Milestone4"
+             Startup="Start">
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>
