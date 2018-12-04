@@ -61,6 +61,9 @@
     <Compile Include="View\AppliedJobsView.xaml.cs">
       <DependentUpon>AppliedJobsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ApplyView.xaml.cs">
+      <DependentUpon>ApplyView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\BrowseJobView.xaml.cs">
       <DependentUpon>BrowseJobView.xaml</DependentUpon>
     </Compile>
@@ -75,6 +78,10 @@
       <DependentUpon>WelcomeView.xaml</DependentUpon>
     </Compile>
     <Page Include="View\AppliedJobsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ApplyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -131,6 +138,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="View\Resources\welcome_page.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Resources\icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -124,7 +124,7 @@
                     </Button>
                     <Button Content="&#xE106;" WindowChrome.IsHitTestVisibleInChrome="True" Click="OnCloseButtonClicked" Style="{StaticResource CloseMenuButtonStyle}"/>
                 </StackPanel>
-                <DockPanel DockPanel.Dock="Bottom">
+                <DockPanel DockPanel.Dock="Bottom" Visibility="Collapsed">
                     <Button DockPanel.Dock="Left" Content="My profile" WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource TopMenuButtonStyle}"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Button Content="Browse jobs" WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource TopMenuButtonStyle}"/>
@@ -133,14 +133,13 @@
                         <Button Content="My Files" WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource TopMenuButtonStyle}"/>
                     </StackPanel>
                 </DockPanel>
-
-
-                <TextBlock Text="{Binding Title, ElementName=RootWindow, Mode=OneTime}" Foreground="White" Margin="15"/>
+                <Image DockPanel.Dock="Left" Margin="0,0,0,0" Width="30" Source="Resources/icon.png"/>
+                <TextBlock Text="{Binding Title, ElementName=RootWindow, Mode=OneTime}" Foreground="White" Margin="8,15"/>
             </DockPanel>
         </Border>
         
         
-        <local:AppliedJobsView/>
+        <local:WelcomeView/>
     </DockPanel>
 
 </Window>
