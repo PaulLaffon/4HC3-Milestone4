@@ -45,7 +45,7 @@ namespace Milestone4.Model
 
         public Job(int id, string[] fields)
         {
-            Random random = new Random();
+            Random random = new Random(17);
             int companyIndex = random.Next(0, Job.Companies.Length);
             int cityIndex = random.Next(0, Job.Cities.Length);
 
