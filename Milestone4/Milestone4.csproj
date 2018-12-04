@@ -60,7 +60,11 @@
     <Compile Include="Model\JobApplied.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Model\WebsiteData.cs" />
+    <Compile Include="ViewModel\ButtonCommand.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\StateToVisibilityConverter.cs" />
+    <Compile Include="ViewModel\SystemState.cs" />
+    <Compile Include="ViewModel\UserViewModel.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="View\AppliedJobsView.xaml.cs">
       <DependentUpon>AppliedJobsView.xaml</DependentUpon>
