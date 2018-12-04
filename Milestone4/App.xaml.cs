@@ -18,9 +18,15 @@ namespace Milestone4
         /// <param name="e">Not used</param>
         private void Start(object sender, StartupEventArgs e)
         {
+
             var wnd = new MainWindow();
-            wnd.DataContext = new MainWindowViewModel(new WebsiteData()); 
+            wnd.DataContext = new MainWindowViewModel(GetData()); 
             wnd.Show();
+        }
+
+        private WebsiteData GetData()
+        {
+            return new WebsiteData();
         }
     }
 }
