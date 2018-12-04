@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:Milestone4"
              Startup="Start">
     <Application.Resources>
-         
+        <FontFamily x:Key="Segoe MDL2 Assets">pack://application:,,,/View/Resources/#Segoe MDL2 Assets</FontFamily>
     </Application.Resources>
 </Application>

@@ -140,7 +140,7 @@
         </Border>
         
         
-        <local:BrowseJobView/>
+        <local:AppliedJobsView/>
     </DockPanel>
 
 </Window>

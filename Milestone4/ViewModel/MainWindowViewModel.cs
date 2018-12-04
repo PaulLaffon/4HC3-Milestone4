@@ -11,7 +11,7 @@ namespace Milestone4.ViewModel
     public class MainWindowViewModel : ViewModel
     {
         private ObservableCollection<Job> jobsToDisplay;
-
+        private ObservableCollection<Job> appliedJobs;
 
 
         public ObservableCollection<Job> JobsToDisplay
@@ -20,6 +20,16 @@ namespace Milestone4.ViewModel
             set
             {
                 jobsToDisplay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<Job> AppliedJobs
+        {
+            get { return appliedJobs; }
+            set
+            {
+                appliedJobs = value;
                 OnPropertyChanged();
             }
         }
@@ -48,6 +58,12 @@ At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praese
             {
                 b.Add(a);
             }
+            var c = new List<Job>();
+            for (int i = 0; i < 3; i++)
+            {
+                c.Add(a);
+            }
+            AppliedJobs = new ObservableCollection<Job>(c);
             JobsToDisplay = new ObservableCollection<Job>(b);
         }
     }

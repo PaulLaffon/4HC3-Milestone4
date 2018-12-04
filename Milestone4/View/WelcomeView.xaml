@@ -6,6 +6,9 @@
              xmlns:local="clr-namespace:Milestone4.View"
              mc:Ignorable="d" 
              d:DesignHeight="1080" d:DesignWidth="1920">
+    <UserControl.Background>
+        <ImageBrush ImageSource="Resources/welcome_page.png" Stretch="UniformToFill"/>
+    </UserControl.Background>
     <UserControl.Resources>
         <Style TargetType="{x:Type Button}" x:Key="TabButtonStyle">
             <Setter Property="Foreground" Value="Black"/>
@@ -94,6 +97,7 @@
         <TextBlock Grid.Row="0" Grid.ColumnSpan="2"
                    Margin="50,50,50,50"
                    TextAlignment="Center"
+                   Foreground="White"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center">
             <Run Text="Welcome To Hot-Jobs" FontSize="40" FontWeight="Bold"/>

@@ -58,6 +58,9 @@
     <Compile Include="Model\Job.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
+    <Compile Include="View\AppliedJobsView.xaml.cs">
+      <DependentUpon>AppliedJobsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\BrowseJobView.xaml.cs">
       <DependentUpon>BrowseJobView.xaml</DependentUpon>
     </Compile>
@@ -71,6 +74,10 @@
     <Compile Include="View\WelcomeView.xaml.cs">
       <DependentUpon>WelcomeView.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\AppliedJobsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\BrowseJobView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -107,6 +114,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <Resource Include="View\Resources\segoe-mdl2-assets.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -120,6 +128,9 @@
   <ItemGroup>
     <Resource Include="View\Resources\key.png" />
     <Resource Include="View\Resources\user.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="View\Resources\welcome_page.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
