@@ -2,6 +2,7 @@
 using Milestone4.View;
 using Milestone4.ViewModel;
 using System.Windows;
+using Microsoft.VisualBasic.FileIO;
 
 namespace Milestone4
 {
@@ -24,9 +25,43 @@ namespace Milestone4
             wnd.Show();
         }
 
+        /// <summary>
+        /// Load the jobs from the file jobs.csv
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private WebsiteData GetData()
         {
-            return new WebsiteData();
+            string filename = "jobs.csv";
+            WebsiteData websiteData = new WebsiteData();
+
+            using (TextFieldParser csvParser = new TextFieldParser(filename))
+            {
+                csvParser.SetDelimiters(new string[] { "," });
+                csvParser.HasFieldsEnclosedInQuotes = true;
+
+                // Skip the row with the column names
+                csvParser.ReadLine();
+                int id = 0;
+
+                while (!csvParser.EndOfData)
+                {
+                    // Read current line fields, pointer moves to the next line.
+                    string[] fields = csvParser.ReadFields();
+
+                    Job job = new Job(id, fields);
+                    id++;
+                    websiteData.Jobs.Add(job);
+                }
+            }
+
+            User u = new User();
+            u.Name = "Admin";
+            u.Password = "1234";
+
+            websiteData.Users.Add(u);
+
+            return websiteData;
         }
     }
 }
