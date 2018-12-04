@@ -56,6 +56,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\Job.cs" />
+    <Compile Include="Model\JobApplied.cs" />
+    <Compile Include="Model\User.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="View\AppliedJobsView.xaml.cs">

@@ -1,4 +1,5 @@
-﻿using Milestone4.View;
+﻿using Milestone4.Model;
+using Milestone4.View;
 using Milestone4.ViewModel;
 using System.Windows;
 
@@ -18,7 +19,7 @@ namespace Milestone4
         private void Start(object sender, StartupEventArgs e)
         {
             var wnd = new MainWindow();
-            wnd.DataContext = new MainWindowViewModel(); 
+            wnd.DataContext = new MainWindowViewModel(new WebsiteData()); 
             wnd.Show();
         }
     }

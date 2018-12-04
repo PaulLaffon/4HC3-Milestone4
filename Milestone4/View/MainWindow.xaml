@@ -124,7 +124,7 @@
                     </Button>
                     <Button Content="&#xE106;" WindowChrome.IsHitTestVisibleInChrome="True" Click="OnCloseButtonClicked" Style="{StaticResource CloseMenuButtonStyle}"/>
                 </StackPanel>
-                <DockPanel DockPanel.Dock="Bottom" Visibility="Collapsed">
+                <DockPanel DockPanel.Dock="Bottom" Visibility="Visible">
                     <Button DockPanel.Dock="Left" Content="My profile" WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource TopMenuButtonStyle}"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Button Content="Browse jobs" WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource TopMenuButtonStyle}"/>
