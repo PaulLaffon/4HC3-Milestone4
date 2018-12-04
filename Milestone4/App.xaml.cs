@@ -32,7 +32,7 @@ namespace Milestone4
         /// <returns></returns>
         private WebsiteData GetData()
         {
-            string filename = "jobs.csv";
+            string filename = "data/jobs.csv";
             WebsiteData websiteData = new WebsiteData();
 
             using (TextFieldParser csvParser = new TextFieldParser(filename))
