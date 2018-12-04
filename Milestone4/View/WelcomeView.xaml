@@ -246,7 +246,8 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                
+                <TextBlock x:Name="PassReceiver" Text="{Binding Password, Mode=TwoWay}" Visibility="Collapsed"/>
+                <TextBlock x:Name="ConfPassReceiver" Text="{Binding PasswordConfirmation, Mode=TwoWay}" Visibility="Collapsed"/>
                 <TextBlock Grid.Row="1" Grid.Column="0"
                            Margin="40,0,10,0"
                            Text="Username"
@@ -256,7 +257,7 @@
                 <TextBox Grid.Row="1" Grid.Column="1"
                      Margin="10,5"
                      Padding="10"
-                     Text=""/>
+                     Text="{Binding UserName}"/>
                 
                 <TextBlock Grid.Row="3" Grid.Column="0"
                            Margin="40,0,10,0"
@@ -264,10 +265,11 @@
                            FontSize="16"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Right"/>
-                <TextBox Grid.Row="3" Grid.Column="1"
-                     Margin="10,5"
-                     Padding="10"
-                     Text=""/>
+                <PasswordBox Grid.Row="3" Grid.Column="1"
+                             x:Name="PassBox"
+                             Margin="10,5"
+                             Padding="10"
+                             PasswordChanged="PasswordChanged"/>
 
                 <TextBlock Grid.Row="5" Grid.Column="0"
                            Margin="20,0,10,0"
@@ -275,10 +277,11 @@
                            FontSize="16"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Right"/>
-                <TextBox Grid.Row="5" Grid.Column="1"
-                     Margin="10,5"
-                     Padding="10"
-                     Text=""/>
+                <PasswordBox Grid.Row="5" Grid.Column="1"
+                             x:Name="PassConfBox"
+                             Margin="10,5"
+                             Padding="10"
+                             PasswordChanged="PasswordConfirmationChanged"/>
 
                 <TextBlock Grid.Row="7" Grid.Column="0"
                            Margin="40,0,10,0"
@@ -289,11 +292,12 @@
                 <TextBox Grid.Row="7" Grid.Column="1"
                      Margin="10,5"
                      Padding="10"
-                     Text=""/>
+                     Text="{Binding Email}"/>
 
 
                 <Button Grid.Row="9" Grid.Column="1"
                         Content="Create my profile"
+                        Command="{Binding RegisterCommand}"
                         Style="{StaticResource EnterButtonStyle}"/>
             </Grid>
 
@@ -361,6 +365,7 @@
                 </TextBox>
                 <Button Grid.Row="5" Grid.Column="1"
                         Content="Sign in"
+                        Command="{Binding LogCommand}"
                         Style="{StaticResource EnterButtonStyle}"/>
             </Grid>
 

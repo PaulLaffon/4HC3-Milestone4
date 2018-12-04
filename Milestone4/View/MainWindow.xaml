@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Milestone4.View"
+        xmlns:viewmodel="clr-namespace:Milestone4.ViewModel"
         mc:Ignorable="d"
         Title="Hot-Jobs.com"
         Background="White"
@@ -31,6 +32,9 @@
             ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
     <Window.Resources>
+        <viewmodel:StateToVisibilityConverter x:Key="stateConverter" />
+        <viewmodel:NotStateToVisibilityConverter x:Key="notStateConverter" />
+        
         <Style TargetType="{x:Type Button}" x:Key="TopMenuButtonStyle">
             <Setter Property="Margin" Value="10,0,10,10"/>
             <Setter Property="BorderThickness" Value="1"/>
@@ -124,7 +128,8 @@
                     </Button>
                     <Button Content="&#xE106;" WindowChrome.IsHitTestVisibleInChrome="True" Click="OnCloseButtonClicked" Style="{StaticResource CloseMenuButtonStyle}"/>
                 </StackPanel>
-                <DockPanel DockPanel.Dock="Bottom" Visibility="Visible">
+                <DockPanel DockPanel.Dock="Bottom"
+                           Visibility="{Binding State, Converter={StaticResource notStateConverter}, ConverterParameter={x:Static viewmodel:SystemState.Welcome}}">
                     <Button DockPanel.Dock="Left" Content="My profile" WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource TopMenuButtonStyle}"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Button Content="Browse jobs" WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource TopMenuButtonStyle}"/>
@@ -137,9 +142,13 @@
                 <TextBlock Text="{Binding Title, ElementName=RootWindow, Mode=OneTime}" Foreground="White" Margin="8,15"/>
             </DockPanel>
         </Border>
-        
-        
-        <local:WelcomeView/>
+        <Grid>
+            <local:WelcomeView Visibility="{Binding State, Converter={StaticResource stateConverter}, ConverterParameter={x:Static viewmodel:SystemState.Welcome}}"/>
+            <local:BrowseJobView Visibility="{Binding State, Converter={StaticResource stateConverter}, ConverterParameter={x:Static viewmodel:SystemState.Browse}}"/>
+            <local:ApplyView Visibility="{Binding State, Converter={StaticResource stateConverter}, ConverterParameter={x:Static viewmodel:SystemState.Apply}}"/>
+            <local:AppliedJobsView Visibility="{Binding State, Converter={StaticResource stateConverter}, ConverterParameter={x:Static viewmodel:SystemState.AppliedJobs}}"/>
+
+        </Grid>
     </DockPanel>
 
 </Window>

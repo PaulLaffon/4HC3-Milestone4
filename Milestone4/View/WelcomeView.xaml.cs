@@ -56,6 +56,16 @@ namespace Milestone4.View
             SignInButton.IsEnabled = false;
             SignInGrid.Visibility = Visibility.Visible;
         }
+
+        private void PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            PassReceiver.SetValue(TextBlock.TextProperty, PassBox.Password);
+        }
+
+        private void PasswordConfirmationChanged(object sender, RoutedEventArgs e)
+        {
+            ConfPassReceiver.SetValue(TextBlock.TextProperty, PassConfBox.Password);
+        }
     }
     
 }
