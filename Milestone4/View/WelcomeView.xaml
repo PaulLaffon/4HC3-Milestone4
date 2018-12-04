@@ -318,6 +318,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
+                <TextBlock x:Name="PassLogReceiver" Text="{Binding PasswordLog, Mode=TwoWay}" Visibility="Collapsed"/>
                 <TextBlock Grid.Row="1" Grid.Column="0"
                            Margin="40,0,10,0"
                            Text="Username"
@@ -328,7 +329,7 @@
                 <TextBox Grid.Row="1" Grid.Column="1"
                      Margin="10,5"
                      Padding="40,10,10,10"
-                     Text="">
+                     Text="{Binding UserNameLog}">
                     <TextBox.Background>
                         <VisualBrush AlignmentX="Left" AlignmentY="Center" Stretch="None">
                             <VisualBrush.Visual>
@@ -348,11 +349,13 @@
                            VerticalAlignment="Center"
                            HorizontalAlignment="Right"/>
                 <Border Grid.Row="3" Grid.Column="1" Margin="10,5" Background="White"/>
-                <TextBox Grid.Row="3" Grid.Column="1"
-                     Margin="10,5"
-                     Padding="40,10,10,10"
-                     Text="">
-                    <TextBox.Background>
+                <PasswordBox Grid.Row="3" Grid.Column="1"
+                             x:Name="PassLogBox"
+                             Margin="10,5"
+                             Padding="40,10,10,10"
+                             PasswordChanged="PasswordLogChanged"
+                             KeyDown="LogPassKeyDownHandler">
+                    <PasswordBox.Background>
                         <VisualBrush AlignmentX="Left" AlignmentY="Center" Stretch="None">
                             <VisualBrush.Visual>
                                 <DockPanel HorizontalAlignment="Stretch">
@@ -361,9 +364,10 @@
                                 </DockPanel>
                             </VisualBrush.Visual>
                         </VisualBrush>
-                    </TextBox.Background>
-                </TextBox>
+                    </PasswordBox.Background>
+                </PasswordBox>
                 <Button Grid.Row="5" Grid.Column="1"
+                        x:Name="LogButton"
                         Content="Sign in"
                         Command="{Binding LogCommand}"
                         Style="{StaticResource EnterButtonStyle}"/>

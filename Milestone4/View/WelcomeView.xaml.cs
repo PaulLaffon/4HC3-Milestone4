@@ -62,9 +62,22 @@ namespace Milestone4.View
             PassReceiver.SetValue(TextBlock.TextProperty, PassBox.Password);
         }
 
+        private void PasswordLogChanged(object sender, RoutedEventArgs e)
+        {
+            PassLogReceiver.SetValue(TextBlock.TextProperty, PassLogBox.Password);
+        }
+
         private void PasswordConfirmationChanged(object sender, RoutedEventArgs e)
         {
             ConfPassReceiver.SetValue(TextBlock.TextProperty, PassConfBox.Password);
+        }
+
+        private void LogPassKeyDownHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                LogButton.Command.Execute(null);
+            }
         }
     }
     

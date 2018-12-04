@@ -24,7 +24,7 @@
                                    FontSize="12">
                             <Run Text="{Binding NbDaysToApply, Mode=OneWay}" FontSize="10"/>
                             <LineBreak/>
-                            <Run Text="{Binding Title}" FontSize="16" FontWeight="Bold"/>
+                            <Run Text="{Binding Title}" FontSize="14" FontWeight="DemiBold" ToolTip="{Binding Title}"/>
                             <LineBreak/>
                             <Run Text="{Binding CompanyName}"/>
                             <Run Text="-"/>
@@ -95,8 +95,8 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
         
         <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
@@ -251,10 +251,22 @@
                  FlowDirection="RightToLeft"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 SelectedItem="{Binding SelectedJob, Mode=TwoWay}"
                  ItemsSource="{Binding JobsToDisplay, Mode=OneWay}"/>
         
+        <TextBlock Grid.Row="1" Grid.Column="1"
+                   TextAlignment="Center"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="16"
+                   FontStyle="Italic"
+                   Visibility="{Binding JobDMessageVisibility}">
+            <Run Text="No jobs found for your search"/>
+        </TextBlock>
+
         <ScrollViewer Grid.Row="1" Grid.Column="1"
-                      Padding="0,20,0,20">
+                      Padding="0,20,0,20"
+                      Visibility="{Binding JobDetailsVisibility}">
             <DockPanel>
                 <Border DockPanel.Dock="Top"
                         Padding="20"

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Milestone4.ViewModel
@@ -17,6 +18,7 @@ namespace Milestone4.ViewModel
         private UserViewModel userVM;
         private ObservableCollection<Job> jobsToDisplay;
         private ObservableCollection<Job> appliedJobs;
+        private Job selectedJob;
 
         private SystemState state;
         private string userName = "";
@@ -117,6 +119,21 @@ namespace Milestone4.ViewModel
             }
         }
 
+        public Job SelectedJob
+        {
+            get { return selectedJob; }
+            set
+            {
+                selectedJob = value;
+                OnPropertyChanged();
+                OnPropertyChanged("JobDetailsVisibility");
+                OnPropertyChanged("JobDMessageVisibility");
+            }
+        }
+
+        public Visibility JobDetailsVisibility { get { return SelectedJob == null ? Visibility.Collapsed : Visibility.Visible; } }
+        public Visibility JobDMessageVisibility { get { return SelectedJob == null ? Visibility.Visible : Visibility.Collapsed; } }
+
         public ObservableCollection<Job> JobsToDisplay
         {
             get { return jobsToDisplay; }
@@ -124,6 +141,10 @@ namespace Milestone4.ViewModel
             {
                 jobsToDisplay = value;
                 OnPropertyChanged();
+                if (jobsToDisplay.Count > 0)
+                    SelectedJob = jobsToDisplay[0];
+                else
+                    SelectedJob = null;
             }
         }
 

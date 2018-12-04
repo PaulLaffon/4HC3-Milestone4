@@ -11,7 +11,6 @@ namespace Milestone4.ViewModel
     {
         public User ManagedUser { get; private set; }
 
-
         public UserViewModel(User user)
         {
             ManagedUser = user;
