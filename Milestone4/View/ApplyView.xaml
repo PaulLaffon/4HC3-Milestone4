@@ -8,75 +8,78 @@
              Background="WhiteSmoke"
              d:DesignHeight="1024" d:DesignWidth="1920">
     <UserControl.Resources>
-        <Style TargetType="{x:Type Button}" x:Key="UploadButtonStyle">
-            <Setter Property="Margin" Value="0"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="#FF434649"/>
-            <Setter Property="FontWeight" Value="DemiBold"/>
-            <Setter Property="Foreground" Value="#FF434649"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Padding="10,5" CornerRadius="3" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="BorderBrush" Value="Transparent"/>
-                    <Setter Property="Background" Value="#FF0073B1"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="BorderBrush" Value="Transparent"/>
-                    <Setter Property="Background" Value="#FF006097"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+        <ResourceDictionary>
 
-        <Style TargetType="{x:Type Button}" x:Key="EnterButtonStyle">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="FontWeight" Value="Normal"/>
-            <Setter Property="Background" Value="#FF499DF4"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="BorderBrush" Value="#FFD2DBDB"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Padding="40,15"
+            <Style TargetType="{x:Type Button}" x:Key="UploadButtonStyle">
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderBrush" Value="#FF434649"/>
+                <Setter Property="FontWeight" Value="DemiBold"/>
+                <Setter Property="Foreground" Value="#FF434649"/>
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Padding="10,5" CornerRadius="3" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                        <Setter Property="Background" Value="#FF0073B1"/>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                        <Setter Property="Background" Value="#FF006097"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="{x:Type Button}" x:Key="EnterButtonStyle">
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontWeight" Value="Normal"/>
+                <Setter Property="Background" Value="#FF499DF4"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="BorderBrush" Value="#FFD2DBDB"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Padding="40,15"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 Background="{TemplateBinding Background}"
                                 BorderThickness="{TemplateBinding BorderThickness}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Cursor" Value="Hand"/>
-                    <Setter Property="Background" Value="#FF76B6F8"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Cursor" Value="Hand"/>
-                    <Setter Property="Background" Value="#FF277BD3"/>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Background" Value="#FFF4F4F4"/>
-                    <Setter Property="Foreground" Value="#FFA093A7"/>
-                    <Setter Property="BorderThickness" Value="2"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Background" Value="#FF76B6F8"/>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Background" Value="#FF277BD3"/>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Background" Value="#FFF4F4F4"/>
+                        <Setter Property="Foreground" Value="#FFA093A7"/>
+                        <Setter Property="BorderThickness" Value="2"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Border Margin="30"
             Padding="50,20"
@@ -96,14 +99,14 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0"
-                       Margin="0"
+                       Margin="50,0"
                        FontSize="24"
                        FontWeight="Bold"
                        TextAlignment="Center"
                        TextWrapping="Wrap"
                        Foreground="#FF434649">
                 <Run Text="Apply for '"/>
-                <Run Text="{Binding JobToApply.Title}"/>
+                <Run Text="{Binding SelectedJob.Title}" FontStyle="Italic" FontWeight="Normal"/>
                 <Run Text="'"/>
             </TextBlock>
             <TextBlock Grid.Row="1"
@@ -117,12 +120,13 @@
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
                 <ComboBox Grid.Column="0"
-                      Background="White"
-                      Margin="0,0,20,0"
-                      Padding="10"
-                      SelectedIndex="0">
+                          Background="White"
+                          Margin="0,0,20,0"
+                          Padding="10"
+                          SelectedItem="{Binding UserVM.SelectedResume, Mode=TwoWay}"
+                          ItemsSource="{Binding UserVM.Resumes, Mode=OneWay}">
                 </ComboBox>
-                <Button Grid.Column="1" Content="Upload a new resume" Style="{StaticResource UploadButtonStyle}"/>
+                <Button Grid.Column="1" Content="Upload a new resume" Style="{StaticResource UploadButtonStyle}" Command="{Binding AddNewRCommand}"/>
             </Grid>
             <TextBlock Grid.Row="3"
                        Margin="0,20,0,0"
@@ -135,12 +139,13 @@
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
                 <ComboBox Grid.Column="0"
-                      Background="White"
-                      Margin="0,0,20,0"
-                      Padding="10"
-                      SelectedIndex="0">
+                          Background="White"
+                          Margin="0,0,20,0"
+                          Padding="10"
+                          SelectedItem="{Binding UserVM.SelectedCoverLetter, Mode=TwoWay}"
+                          ItemsSource="{Binding UserVM.CoverLetters, Mode=OneWay}">
                 </ComboBox>
-                <Button Grid.Column="1" Content="Upload a new letter" Style="{StaticResource UploadButtonStyle}"/>
+                <Button Grid.Column="1" Content="Upload a new letter" Style="{StaticResource UploadButtonStyle}" Command="{Binding AddNewCLCommand}"/>
             </Grid>
             <TextBlock Grid.Row="5"
                        Margin="0,20,0,0"
@@ -149,6 +154,7 @@
             <TextBox Grid.Row="6"
                      Margin="0"
                      Padding="10"
+                     Text="{Binding Comment, Mode=TwoWay}"
                      TextWrapping="Wrap"
                      AcceptsReturn="True"
                      SpellCheck.IsEnabled="True"
@@ -157,7 +163,8 @@
                     Margin="0,20,0,0"
                     Content="Apply"
                     HorizontalAlignment="Right"
-                    Style="{StaticResource EnterButtonStyle}"/>
+                    Style="{StaticResource EnterButtonStyle}"
+                    Command="{Binding ApplyCommand}"/>
         </Grid>
     </Border>
 </UserControl>

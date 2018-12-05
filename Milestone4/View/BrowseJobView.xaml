@@ -283,14 +283,21 @@
                             <ColumnDefinition/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"/>
+                        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                               Margin="-10"
+                               Height="70"
+                               MaxWidth="100"
+                               Stretch="Uniform"
+                               Source="{Binding SelectedJob.LogoUri}" RenderOptions.BitmapScalingMode="HighQuality"/>
                         <TextBlock Grid.Row="0" Grid.Column="1"
+                                   Margin="10,0,0,0"
                                    Text="{Binding SelectedItem.Title, ElementName=JobListBox}"
                                    FontSize="20"
                                    FontWeight="Bold"
                                    TextAlignment="Center"
                                    VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"/>
+                                   HorizontalAlignment="Center"
+                                   TextWrapping="Wrap"/>
                         <TextBlock Grid.Row="1" Grid.Column="1"
                                    FontSize="18"
                                    TextAlignment="Center"
@@ -302,13 +309,15 @@
                             <Run Text=","/>
                             <Run Text="{Binding SelectedItem.City, ElementName=JobListBox}"/>
                         </TextBlock>
+                        
                         <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
-                                Content="Apply"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
-                                Cursor="Hand">
+                                Cursor="Hand"
+                                Command="{Binding ApplyViewCommand}">
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Content" Value="Apply"/>
                                     <Setter Property="Foreground" Value="White"/>
                                     <Setter Property="FontSize" Value="14"/>
                                     <Setter Property="FontWeight" Value="Normal"/>
@@ -339,6 +348,10 @@
                                             <Setter Property="Foreground" Value="#FFA093A7"/>
                                             <Setter Property="BorderThickness" Value="2"/>
                                         </Trigger>
+                                        <DataTrigger Binding="{Binding AlreadyApplied}" Value="True">
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                            <Setter Property="Content" Value="Applied"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Button.Style>

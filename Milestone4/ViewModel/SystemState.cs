@@ -9,6 +9,7 @@ namespace Milestone4.ViewModel
     public enum SystemState
     {
         Welcome,
+        Profile,
         Browse,
         Apply,
         AppliedJobs,

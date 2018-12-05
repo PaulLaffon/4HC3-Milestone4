@@ -130,12 +130,12 @@
                 </StackPanel>
                 <DockPanel DockPanel.Dock="Bottom"
                            Visibility="{Binding State, Converter={StaticResource notStateConverter}, ConverterParameter={x:Static viewmodel:SystemState.Welcome}}">
-                    <Button DockPanel.Dock="Left" Content="My profile" WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource TopMenuButtonStyle}"/>
+                    <Button DockPanel.Dock="Left" Content="My profile" WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource TopMenuButtonStyle}" Command="{Binding ProfileCommand}"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Button Content="Browse jobs" WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource TopMenuButtonStyle}"/>
-                        <Button Content="My applications" WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource TopMenuButtonStyle}"/>
-                        <Button Content="Saved jobs" WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource TopMenuButtonStyle}"/>
-                        <Button Content="My Files" WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource TopMenuButtonStyle}"/>
+                        <Button Content="Browse jobs" WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource TopMenuButtonStyle}" Command="{Binding BrowseCommand}"/>
+                        <Button Content="My applications" WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource TopMenuButtonStyle}" Command="{Binding AppliedJobsCommand}"/>
+                        <Button Content="Saved jobs" WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource TopMenuButtonStyle}" Command="{Binding SavedJobsCommand}"/>
+                        <Button Content="My Files" WindowChrome.IsHitTestVisibleInChrome="True" Style="{StaticResource TopMenuButtonStyle}" Command="{Binding FilesCommand}"/>
                     </StackPanel>
                 </DockPanel>
                 <Image DockPanel.Dock="Left" Margin="0,0,0,0" Width="30" Source="Resources/icon.png"/>

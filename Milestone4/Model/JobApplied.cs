@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Xml.Serialization;
 
 namespace Milestone4.Model
 {
@@ -10,11 +6,9 @@ namespace Milestone4.Model
     {
         public string ApplicationDate { get; set; }
 
-        public Job Job { get; private set; }
+        public int JobId { get; set; }
 
-        public JobApplied(Job j)
-        {
-            Job = j;
-        }
+        [XmlIgnore]
+        public Job Job { get; set; }
     }
 }

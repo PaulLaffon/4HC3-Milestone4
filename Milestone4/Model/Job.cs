@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace Milestone4.Model
 {
     public class Job
     {
+        private static readonly Random random = new Random(17);
+
         public static string[] Companies = {
             "Google", "Amazon", "Microsoft", "Apple",
             "Tim Hortons", "FreshBooks", "Dollarama",
@@ -16,10 +15,10 @@ namespace Milestone4.Model
         };
 
         public static string[] Logos = {
-            "data/logo/google.png", "data/logo/amazon.jpg", "data/logo/microsoft.jpg", "data/logo/apple.jpg",
-            "data/logo/tim_hortons.jpg", "data/logo/fresh.png", "data/logo/dollarama.png",
-            "data/logo/rockstar.jpg", "data/logo/ubisoft.jpg", "data/logo/shell.png",
-            "data/logo/cibc.png", "data/logo/scotia.jpg"
+            "Data/logo/google.png", "Data/logo/amazon.png", "Data/logo/microsoft.png", "Data/logo/apple.png",
+            "Data/logo/tim_hortons.png", "Data/logo/fresh.png", "Data/logo/dollarama.png",
+            "Data/logo/rockstar.png", "Data/logo/ubisoft.png", "Data/logo/shell.png",
+            "Data/logo/cibc.png", "Data/logo/scotia.png"
         };
 
         public static string[] Cities = {
@@ -42,10 +41,10 @@ namespace Milestone4.Model
         public int NbDaysToApply { get; set; }
         public string Category { get; set; }
         public string Logo { get; set; }
+        public string LogoUri { get { return string.Format(@"{0}\{1}", Directory.GetCurrentDirectory(), Logo); } }
 
         public Job(int id, string[] fields)
         {
-            Random random = new Random(17);
             int companyIndex = random.Next(0, Job.Companies.Length);
             int cityIndex = random.Next(0, Job.Cities.Length);
 
@@ -59,7 +58,7 @@ namespace Milestone4.Model
             Salary = (int)salary;
             Level = fields[16];
             YearOfExperience = random.Next(0, 6);
-            Description = fields[15];
+            Description = fields[15].Replace("\\n","\n");
             CompanyName = Companies[companyIndex];
             Logo = Logos[companyIndex];
             Address = fields[13].Split(',')[0];

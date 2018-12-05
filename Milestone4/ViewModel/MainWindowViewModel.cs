@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -28,6 +30,7 @@ namespace Milestone4.ViewModel
         private string passwordConfirmation = "";
         private string email = "";
         private string errorMessage = "";
+        public string comment = "";
 
         public SystemState State
         {
@@ -36,6 +39,7 @@ namespace Milestone4.ViewModel
             {
                 state = value;
                 OnPropertyChanged();
+                OnPropertyChanged("AlreadyApplied");
             }
         }
 
@@ -109,6 +113,16 @@ namespace Milestone4.ViewModel
             }
         }
 
+        public string Comment
+        {
+            get { return comment; }
+            set
+            {
+                comment = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string ErrorMessage
         {
             get { return string.IsNullOrEmpty(errorMessage) ? null : errorMessage; }
@@ -128,6 +142,7 @@ namespace Milestone4.ViewModel
                 OnPropertyChanged();
                 OnPropertyChanged("JobDetailsVisibility");
                 OnPropertyChanged("JobDMessageVisibility");
+                OnPropertyChanged("AlreadyApplied");
             }
         }
 
@@ -148,26 +163,29 @@ namespace Milestone4.ViewModel
             }
         }
 
-        public ObservableCollection<Job> AppliedJobs
-        {
-            get { return appliedJobs; }
-            set
-            {
-                appliedJobs = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool AlreadyApplied { get { return UserVM != null ? UserVM.ManagedUser.JobApplied.FirstOrDefault(j=>j.JobId == SelectedJob.Id) != null : false; } }
 
         #region Commands
+        public ICommand ProfileCommand { get { return new ButtonCommand(()=> { State = SystemState.Profile; }); } }
+        public ICommand BrowseCommand { get { return new ButtonCommand(()=> { State = SystemState.Browse; }); } }
+        public ICommand ApplyViewCommand { get { return new ButtonCommand(() => { State = SystemState.Apply; }); } }
+        public ICommand AppliedJobsCommand { get { return new ButtonCommand(() => { State = SystemState.AppliedJobs; }); } }
+        public ICommand SavedJobsCommand { get { return new ButtonCommand(() => { State = SystemState.SavedJobs; }); } }
+        public ICommand FilesCommand { get { return new ButtonCommand(() => { State = SystemState.Files; }); } }
+
         public ICommand LogCommand { get { return new ButtonCommand(Log); } }
         public ICommand RegisterCommand { get { return new ButtonCommand(Register); } }
+
+        public ICommand ApplyCommand { get { return new ButtonCommand(Apply); } }
+
+        public ICommand AddNewRCommand { get { return new ButtonCommand(AddNewResume); } }
+        public ICommand AddNewCLCommand { get { return new ButtonCommand(AddNewCoverLetter); } }
         #endregion
 
         public MainWindowViewModel(WebsiteData data)
         {
             this.data = data;
             State = SystemState.Welcome;
-            AppliedJobs = null;
             JobsToDisplay = new ObservableCollection<Job>(data.Jobs);
             UserVM = null;
         }
@@ -182,6 +200,7 @@ namespace Milestone4.ViewModel
             }
             else
                 ErrorMessage = "Authentication failed, please try again";
+            ErrorMessage = null;
         }
 
         private void Register()
@@ -216,7 +235,92 @@ namespace Milestone4.ViewModel
             data.Users.Add(user);
             //PersistenceManager.Save(data);
             UserVM = new UserViewModel(user);
+            ErrorMessage = null;
             State = SystemState.Browse;
+        }
+
+        public void Apply()
+        {
+            if(UserVM.SelectedResume == null)
+            {
+                ErrorMessage = "Please use the dropdown to pick up a resume";
+                return;
+            }
+            if(UserVM.SelectedCoverLetter == null)
+            {
+                ErrorMessage = "Please use the dropdown to pick up a cover letter or upload a new one.";
+                return;
+            }
+            ErrorMessage = null;
+            UserVM.ManagedUser.JobApplied.Add(new JobApplied()
+            {
+                ApplicationDate = DateTime.Now.ToString("M", CultureInfo.InvariantCulture),
+                JobId = SelectedJob.Id,
+                Job = SelectedJob
+            });
+            UserVM.SelectedCoverLetter = null;
+            UserVM.SelectedResume = null;
+            Comment = null;
+            UserVM.UpdateJobsApplied();
+            State = SystemState.AppliedJobs;
+        }
+
+        public void AddNewResume()
+        {
+            try
+            {
+                // Configure open file dialog box
+                Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+                dlg.Title = "Upload a new resume";
+                dlg.Multiselect = false;
+                dlg.CheckFileExists = true;
+                dlg.CheckPathExists = true;
+                dlg.Filter = "All supported files (.pdf, .jpg, .jpeg, .png)|*.jpg;*.png;*.jpeg;*.pdf|PDF files (.pdf)|*.jpg|Images files (.jpg, .jpeg, .png)|*.jpg;*.png;*.jpeg"; // Filter files by extension 
+
+                bool? result = dlg.ShowDialog();
+
+                if (result == true)
+                {
+                    string path = dlg.FileName;
+                    string filename = Path.GetFileName(path);
+                    string dest = string.Format(@".\Data\users\{0}-R-{1}", UserVM.ManagedUser.Name, filename);
+                    File.Copy(path, dest, true);
+                    UserVM.ManagedUser.Resumes.Add(filename);
+                    UserVM.UpdateResumes();
+                    UserVM.SelectedResume = UserViewModel.Extract(filename);
+                }
+            }
+            catch
+            { }
+        }
+
+        public void AddNewCoverLetter()
+        {
+            try
+            {
+                // Configure open file dialog box
+                Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+                dlg.Title = "Upload a new cover letter";
+                dlg.Multiselect = false;
+                dlg.CheckFileExists = true;
+                dlg.CheckPathExists = true;
+                dlg.Filter = "All supported files (.pdf, .jpg, .jpeg, .png)|*.jpg;*.png;*.jpeg;*.pdf|PDF files (.pdf)|*.jpg|Images files (.jpg, .jpeg, .png)|*.jpg;*.png;*.jpeg"; // Filter files by extension 
+
+                bool? result = dlg.ShowDialog();
+
+                if (result == true)
+                {
+                    string path = dlg.FileName;
+                    string filename = Path.GetFileName(path);
+                    string dest = string.Format(@".\Data\users\{0}-CL-{1}", UserVM.ManagedUser.Name, filename);
+                    File.Copy(path, dest, true);
+                    UserVM.ManagedUser.CoverLetters.Add(filename);
+                    UserVM.UpdateCoverLetters();
+                    UserVM.SelectedCoverLetter = UserViewModel.Extract(filename);
+                }
+            }
+            catch
+            { }
         }
     }
 }

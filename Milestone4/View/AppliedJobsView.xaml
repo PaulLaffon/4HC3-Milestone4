@@ -22,14 +22,14 @@
         <Rectangle Grid.Row="1" Margin="10,0" Height="2" Fill="#FFD0D0D0"/>
         <ScrollViewer Grid.Row="2">
             <ItemsControl Margin="0,10,0,0"
-                          ItemsSource="{Binding AppliedJobs}">
+                          ItemsSource="{Binding UserVM.JobsApplied}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border Margin="30,10,13,10"
-                            Padding="20"
-                            Background="White"
-                            BorderThickness="1"
-                            BorderBrush="#FFC3C3C3">
+                                Padding="20"
+                                Background="White"
+                                BorderThickness="1"
+                                BorderBrush="#FFC3C3C3">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -41,15 +41,16 @@
                                        VerticalAlignment="Center"
                                        FontSize="12"
                                        Foreground="#FF434649">
-                                <Run Text="Applied on the" FontSize="14" FontStyle="Italic"/>
-                                <Run Text="" FontSize="14" FontStyle="Italic"/>
+                                <Run Text="Applied on" FontSize="14" FontStyle="Italic"/>
+                                <Run Text="{Binding ApplicationDate}" FontSize="14" FontStyle="Italic"/>
                                 <LineBreak/>
-                                <Run Text="{Binding CompanyName}"/>
+                                <Run Text="{Binding Job.CompanyName}"/>
                                 <Run Text="-"/>
-                                <Run Text="{Binding City}"/>
+                                <Run Text="{Binding Job.City}"/>
                                 </TextBlock>
                                 <TextBlock Grid.Column="1"
-                                       Text="{Binding Title}"
+                                           Margin="30,0,0,0"
+                                       Text="{Binding Job.Title}"
                                        TextAlignment="Center"
                                        VerticalAlignment="Center"
                                        FontSize="18"

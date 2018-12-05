@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Milestone4.Model
 {
@@ -10,8 +6,8 @@ namespace Milestone4.Model
     {
         public string Name { get; set; }
         public string Password { get; set; }
-        public List<JobApplied> JobApplied;
-        public List<Job> SavedJobs;
+        public List<JobApplied> JobApplied { get; set; }
+        public List<Job> SavedJobs { get; set; }
 
 
         public List<string> Resumes { get; set; }

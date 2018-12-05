@@ -120,10 +120,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Content Include="Data\logo\amazon.jpg">
+    <Content Include="Data\logo\amazon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\logo\apple.jpg">
+    <Content Include="Data\logo\apple.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\logo\cibc.png">
@@ -138,22 +138,25 @@
     <Content Include="Data\logo\google.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\logo\microsoft.jpg">
+    <Content Include="Data\logo\microsoft.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\logo\rockstar.jpg">
+    <Content Include="Data\logo\rockstar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\logo\scotia.jpg">
+    <Content Include="Data\logo\scotia.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\logo\shell.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\logo\tim_hortons.jpg">
+    <Content Include="Data\logo\tim_hortons.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\logo\ubisoft.jpg">
+    <Content Include="Data\logo\ubisoft.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\users\users.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -189,6 +192,7 @@
   <ItemGroup>
     <Resource Include="View\Resources\icon.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
