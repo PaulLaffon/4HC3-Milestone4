@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Milestone4.ViewModel
@@ -31,6 +32,14 @@ namespace Milestone4.ViewModel
         private string email = "";
         private string errorMessage = "";
         public string comment = "";
+
+        //Search and Filter variables
+        private String searchText = "";
+        private String searchCategory = "";
+        private String searchLocation = "";
+
+        private ObservableCollection<Filter> filters;
+
 
         public SystemState State
         {
@@ -163,6 +172,107 @@ namespace Milestone4.ViewModel
             }
         }
 
+
+        private ObservableCollection<string> salaries = new ObservableCollection<string> { "Less than $20,000", "$20,000 - $40,000", "$40,000 - $60,000", "$60,000 - $80,000", "$80,000 - $100,000", "Over $100,000" };
+        public ObservableCollection<string> Salaries
+        {
+            get { return salaries; }
+            set
+            { salaries = value;
+                OnPropertyChanged();
+                if (salaries.Count > 0)
+                    SalaryFilter = salaries[0];
+                else
+                    SalaryFilter = null;
+            }
+        }
+        public ObservableCollection<string> companies = new ObservableCollection<string> { "Apple", "Tim Hortons", "CIBC", "Rockstar", "Google"};
+        public ObservableCollection<string> Companies
+        {
+            get { return companies; }
+            set
+            {
+                companies = value;
+                OnPropertyChanged();
+                if (companies.Count > 0)
+                    CompanyFilter = companies[0];
+                else
+                    CompanyFilter = null;
+            }
+        }
+        public ObservableCollection<string> levels = new ObservableCollection<string> { "0", "1", "2", "3", "4" };
+        public ObservableCollection<string> Levels
+        {
+            get { return levels; }
+            set
+            {
+                levels = value;
+                OnPropertyChanged();
+                if (levels.Count > 0)
+                    LevelFilter = levels[0];
+                else
+                    LevelFilter = null;
+            }
+        }
+        public ObservableCollection<string> locations = new ObservableCollection<string> { "Vancouver", "Toronto", "Montreal", "Hamilton", "Ottawa", "New York" };
+        public ObservableCollection<string> Locations
+        {
+            get { return locations; }
+            set
+            {
+                locations = value;
+                OnPropertyChanged();
+                if (locations.Count > 0)
+                    LocationFilter = locations[0];
+                else
+                    LocationFilter = null;
+            }
+        }
+        public ObservableCollection<string> categories = new ObservableCollection<string> { "Finance", "Human Resources", "Research", "Engineering", "Maintenance" };
+        public ObservableCollection<string> Categories
+        {
+            get { return categories; }
+            set
+            {
+                categories = value;
+                OnPropertyChanged();
+                if (categories.Count > 0)
+                    CategoryFilter = categories[0];
+                else
+                    CategoryFilter = null;
+            }
+        }
+
+        public String SalaryFilter { get; set; }
+        public String CompanyFilter { get; set; }
+        public String LevelFilter { get; set; }
+        public String LocationFilter { get; set; }
+        public String CategoryFilter { get; set; }
+
+        public Boolean FilterActive { get; set; }
+
+        public string SearchText
+        {
+            get { return searchText; }
+            set
+            {
+                searchText = value;
+                OnPropertyChanged();
+            }
+
+        }
+
+        public string SearchLocation
+        {
+            get { return searchLocation; }
+            set
+            {
+                searchLocation = value;
+                OnPropertyChanged();
+            }
+
+        }
+
         public bool AlreadyApplied { get { return UserVM != null ? UserVM.ManagedUser.JobApplied.FirstOrDefault(j=>j.JobId == SelectedJob.Id) != null : false; } }
 
         #region Commands
@@ -172,6 +282,8 @@ namespace Milestone4.ViewModel
         public ICommand AppliedJobsCommand { get { return new ButtonCommand(() => { State = SystemState.AppliedJobs; }); } }
         public ICommand SavedJobsCommand { get { return new ButtonCommand(() => { State = SystemState.SavedJobs; }); } }
         public ICommand FilesCommand { get { return new ButtonCommand(() => { State = SystemState.Files; }); } }
+        public ICommand SearchJobsCommand { get { return new ButtonCommand(SearchJobs); } }
+        public ICommand FilterJobsCommand { get { return new ButtonCommand(FilterJobs); } }
 
         public ICommand LogCommand { get { return new ButtonCommand(Log); } }
         public ICommand RegisterCommand { get { return new ButtonCommand(Register); } }
@@ -238,6 +350,57 @@ namespace Milestone4.ViewModel
             ErrorMessage = null;
             State = SystemState.Browse;
         }
+
+        public void SearchJobs()
+        {
+            IEnumerable<Job> matchingJobs = FilterActive ? FilteredJobs() : data.Jobs; //Search all jobs unless a filter is active 
+            if (!String.IsNullOrEmpty(searchText))
+            {
+                matchingJobs = matchingJobs.Where(x => x.CompanyName == searchText || x.Level == searchText || x.Salary.ToString() == searchText || x.City == searchText || x.Description.Contains(searchText));
+            }
+            if (!String.IsNullOrEmpty(searchLocation))
+            {
+                 matchingJobs = matchingJobs.Where(x => x.City == searchLocation);
+            }
+            JobsToDisplay = new ObservableCollection<Job>(matchingJobs);
+        }
+        public void FilterJobs()
+        {
+            JobsToDisplay = new ObservableCollection<Job>(FilteredJobs());
+        }
+        public List<Job> FilteredJobs()
+        {
+
+            IEnumerable<Job> matchingJobs = data.Jobs;
+            if (!String.IsNullOrEmpty(CategoryFilter))
+            {
+                matchingJobs = matchingJobs.Where(x => x.Category.Contains(CategoryFilter));
+                FilterActive = true;
+            };
+            if (!String.IsNullOrEmpty(SalaryFilter))
+            {
+                //Not Implemented
+                FilterActive = true;
+            };
+            if (!String.IsNullOrEmpty(LevelFilter))
+            {
+                //Not Working
+                matchingJobs = matchingJobs.Where(x => x.Level == LevelFilter);
+                FilterActive = true;
+            };
+            if (!String.IsNullOrEmpty(LocationFilter))
+            {
+                matchingJobs = matchingJobs.Where(x => x.City == LocationFilter);
+                FilterActive = true;
+            };
+            if (!String.IsNullOrEmpty(CompanyFilter))
+            {
+                matchingJobs = matchingJobs.Where(x => x.CompanyName == CompanyFilter);
+                FilterActive = true;
+            };
+            return new List<Job>(matchingJobs);
+        }
+
 
         public void Apply()
         {

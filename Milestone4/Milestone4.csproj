@@ -56,6 +56,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\Filter.cs" />
     <Compile Include="Model\Job.cs" />
     <Compile Include="Model\JobApplied.cs" />
     <Compile Include="Model\User.cs" />
