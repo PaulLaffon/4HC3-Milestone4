@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Milestone4.Model;
 
 namespace Milestone4.ViewModel
 {
@@ -18,24 +19,11 @@ namespace Milestone4.ViewModel
             "Over $100,000"
         };
 
-        public static readonly List<string> CompanyFilterValues = new List<string> {
-            "Apple",
-            "Tim Hortons",
-            "CIBC",
-            "Rockstar",
-            "Google"
-        };
+        public static readonly List<string> CompanyFilterValues = new List<string>(Job.Companies);
 
-        public static readonly List<string> LevelFilterValues = new List<string> { "0", "1", "2", "3", "4", "More" };
+        public static readonly List<string> LevelFilterValues = new List<string>(Job.Levels);
 
-        public static readonly List<string> LocationFilterValues = new List<string> {
-            "Vancouver",
-            "Toronto",
-            "Montreal",
-            "Hamilton",
-            "Ottawa",
-            "New York"
-        };
+        public static readonly List<string> LocationFilterValues = new List<string>(Job.Cities);
 
         public static readonly List<string> CategoryFilterValues = new List<string> {
             "Finance",
@@ -45,10 +33,7 @@ namespace Milestone4.ViewModel
             "Maintenance"
         };
 
-        public static readonly List<string> TypeFilterValues = new List<string> {
-            "Internship",
-            "..",
-        };
+        public static readonly List<string> TypeFilterValues = new List<string>(Job.Types.Distinct());
         #endregion
 
         private MainWindowViewModel mainVM;
@@ -75,6 +60,7 @@ namespace Milestone4.ViewModel
             IsSelectable = isSelectable;
             Type = type;
             Value = value;
+            IsSelected = true;
         }
     }
 }
