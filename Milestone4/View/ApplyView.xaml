@@ -106,7 +106,7 @@
                        TextWrapping="Wrap"
                        Foreground="#FF434649">
                 <Run Text="Apply for '"/>
-                <Run Text="{Binding SelectedJob.Title}" FontStyle="Italic" FontWeight="Normal"/>
+                <Run Text="{Binding JobApplyingTo.Title}" FontStyle="Italic" FontWeight="Normal"/>
                 <Run Text="'"/>
             </TextBlock>
             <TextBlock Grid.Row="1"
@@ -125,6 +125,11 @@
                           Padding="10"
                           SelectedItem="{Binding UserVM.SelectedResume, Mode=TwoWay}"
                           ItemsSource="{Binding UserVM.Resumes, Mode=OneWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding FileName}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
                 </ComboBox>
                 <Button Grid.Column="1" Content="Upload a new resume" Style="{StaticResource UploadButtonStyle}" Command="{Binding AddNewRCommand}"/>
             </Grid>
@@ -144,6 +149,11 @@
                           Padding="10"
                           SelectedItem="{Binding UserVM.SelectedCoverLetter, Mode=TwoWay}"
                           ItemsSource="{Binding UserVM.CoverLetters, Mode=OneWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding FileName}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
                 </ComboBox>
                 <Button Grid.Column="1" Content="Upload a new letter" Style="{StaticResource UploadButtonStyle}" Command="{Binding AddNewCLCommand}"/>
             </Grid>

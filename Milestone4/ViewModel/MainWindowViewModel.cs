@@ -21,6 +21,8 @@ namespace Milestone4.ViewModel
         private ObservableCollection<Job> jobsToDisplay;
         private ObservableCollection<Job> appliedJobs;
         private Job selectedJob;
+        private Job uniqJobToDisplay;
+        private Job jobApplyingTo;
 
         private SystemState state;
         private string userName = "";
@@ -40,6 +42,7 @@ namespace Milestone4.ViewModel
                 state = value;
                 OnPropertyChanged();
                 OnPropertyChanged("AlreadyApplied");
+                OnPropertyChanged("IsCurrentJobSaved");
             }
         }
 
@@ -143,7 +146,40 @@ namespace Milestone4.ViewModel
                 OnPropertyChanged("JobDetailsVisibility");
                 OnPropertyChanged("JobDMessageVisibility");
                 OnPropertyChanged("AlreadyApplied");
+                OnPropertyChanged("IsCurrentJobSaved");
             }
+        }
+
+        public Job UniqJobToDisplay
+        {
+            get { return uniqJobToDisplay; }
+            set
+            {
+                uniqJobToDisplay = value;
+                OnPropertyChanged();
+                OnPropertyChanged("IsUniqJobSaved");
+                OnPropertyChanged("UniqAlreadyApplied");
+            }
+        }
+
+        public Job JobApplyingTo
+        {
+            get { return jobApplyingTo; }
+            set
+            {
+                jobApplyingTo = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsCurrentJobSaved
+        {
+            get { return UserVM != null ? UserVM.ManagedUser.SavedJobs.FirstOrDefault(j=>j.Id == SelectedJob.Id) != null : false; }
+        }
+
+        public bool IsUniqJobSaved
+        {
+            get { return UserVM != null ? UserVM.ManagedUser.SavedJobs.FirstOrDefault(j => j.Id == UniqJobToDisplay.Id) != null : false; }
         }
 
         public Visibility JobDetailsVisibility { get { return SelectedJob == null ? Visibility.Collapsed : Visibility.Visible; } }
@@ -163,12 +199,14 @@ namespace Milestone4.ViewModel
             }
         }
 
-        public bool AlreadyApplied { get { return UserVM != null ? UserVM.ManagedUser.JobApplied.FirstOrDefault(j=>j.JobId == SelectedJob.Id) != null : false; } }
+        public bool AlreadyApplied { get { return UserVM != null ? UserVM.ManagedUser.JobApplied.FirstOrDefault(j => j.JobId == SelectedJob.Id) != null : false; } }
+        public bool UniqAlreadyApplied { get { return UserVM != null ? UserVM.ManagedUser.JobApplied.FirstOrDefault(j => j.JobId == UniqJobToDisplay.Id) != null : false; } }
 
         #region Commands
         public ICommand ProfileCommand { get { return new ButtonCommand(()=> { State = SystemState.Profile; }); } }
         public ICommand BrowseCommand { get { return new ButtonCommand(()=> { State = SystemState.Browse; }); } }
-        public ICommand ApplyViewCommand { get { return new ButtonCommand(() => { State = SystemState.Apply; }); } }
+        public ICommand ApplyViewCommand { get { return new ButtonCommand(() => { JobApplyingTo = SelectedJob; State = SystemState.Apply; }); } }
+        public ICommand UniqApplyViewCommand { get { return new ButtonCommand(() => { JobApplyingTo = UniqJobToDisplay; State = SystemState.Apply; }); } }
         public ICommand AppliedJobsCommand { get { return new ButtonCommand(() => { State = SystemState.AppliedJobs; }); } }
         public ICommand SavedJobsCommand { get { return new ButtonCommand(() => { State = SystemState.SavedJobs; }); } }
         public ICommand FilesCommand { get { return new ButtonCommand(() => { State = SystemState.Files; }); } }
@@ -177,6 +215,28 @@ namespace Milestone4.ViewModel
         public ICommand RegisterCommand { get { return new ButtonCommand(Register); } }
 
         public ICommand ApplyCommand { get { return new ButtonCommand(Apply); } }
+        public ICommand SaveJobCommand { get { return new ButtonCommand(()=> {
+            if (IsCurrentJobSaved)
+                UserVM.Unsave(SelectedJob);
+            else
+                UserVM.Save(SelectedJob);
+            OnPropertyChanged("IsCurrentJobSaved");
+            });
+            }
+        }
+        public ICommand SaveUniqJobCommand
+        {
+            get
+            {
+                return new ButtonCommand(() => {
+                    if (IsUniqJobSaved)
+                        UserVM.Unsave(UniqJobToDisplay);
+                    else
+                        UserVM.Save(UniqJobToDisplay);
+                    OnPropertyChanged("IsUniqJobSaved");
+                });
+            }
+        }
 
         public ICommand AddNewRCommand { get { return new ButtonCommand(AddNewResume); } }
         public ICommand AddNewCLCommand { get { return new ButtonCommand(AddNewCoverLetter); } }
@@ -190,12 +250,18 @@ namespace Milestone4.ViewModel
             UserVM = null;
         }
 
+        public void SeeJob(Job j)
+        {
+            UniqJobToDisplay = j;
+            State = SystemState.SeeJob;
+        }
+
         private void Log()
         {
             var user = data.Users.FirstOrDefault(u => string.Equals(UserNameLog, u.Name));
             if (user != null && user.Password == PasswordLog)
             {
-                UserVM = new UserViewModel(user);
+                UserVM = new UserViewModel(this, user);
                 State = SystemState.Browse;
             }
             else
@@ -234,7 +300,7 @@ namespace Milestone4.ViewModel
             user = new User() { Name = UserName, Password = Password };
             data.Users.Add(user);
             //PersistenceManager.Save(data);
-            UserVM = new UserViewModel(user);
+            UserVM = new UserViewModel(this, user);
             ErrorMessage = null;
             State = SystemState.Browse;
         }
@@ -255,8 +321,8 @@ namespace Milestone4.ViewModel
             UserVM.ManagedUser.JobApplied.Add(new JobApplied()
             {
                 ApplicationDate = DateTime.Now.ToString("M", CultureInfo.InvariantCulture),
-                JobId = SelectedJob.Id,
-                Job = SelectedJob
+                JobId = JobApplyingTo.Id,
+                Job = JobApplyingTo
             });
             UserVM.SelectedCoverLetter = null;
             UserVM.SelectedResume = null;
@@ -283,11 +349,12 @@ namespace Milestone4.ViewModel
                 {
                     string path = dlg.FileName;
                     string filename = Path.GetFileName(path);
-                    string dest = string.Format(@".\Data\users\{0}-R-{1}", UserVM.ManagedUser.Name, filename);
+                    string dest = GetFilePath(UserVM.ManagedUser.Name, filename, true);
                     File.Copy(path, dest, true);
-                    UserVM.ManagedUser.Resumes.Add(filename);
+                    if(!UserVM.ManagedUser.Resumes.Contains(filename))
+                        UserVM.ManagedUser.Resumes.Add(filename);
                     UserVM.UpdateResumes();
-                    UserVM.SelectedResume = UserViewModel.Extract(filename);
+                    UserVM.SelectedResume = UserVM.Resumes.FirstOrDefault(f => f.FileName == UserViewModel.Extract(filename));
                 }
             }
             catch
@@ -312,15 +379,24 @@ namespace Milestone4.ViewModel
                 {
                     string path = dlg.FileName;
                     string filename = Path.GetFileName(path);
-                    string dest = string.Format(@".\Data\users\{0}-CL-{1}", UserVM.ManagedUser.Name, filename);
+                    string dest = GetFilePath(UserVM.ManagedUser.Name, filename, false);
                     File.Copy(path, dest, true);
-                    UserVM.ManagedUser.CoverLetters.Add(filename);
+                    if (!UserVM.ManagedUser.CoverLetters.Contains(filename))
+                        UserVM.ManagedUser.CoverLetters.Add(filename);
                     UserVM.UpdateCoverLetters();
-                    UserVM.SelectedCoverLetter = UserViewModel.Extract(filename);
+                    UserVM.SelectedCoverLetter = UserVM.CoverLetters.FirstOrDefault(f => f.FileName == UserViewModel.Extract(filename));
                 }
             }
             catch
             { }
+        }
+
+        public static string GetFilePath(string userName, string fileName, bool IsResume)
+        {
+            if(IsResume)
+                return string.Format(@".\Data\users\{0}-R-{1}", userName, fileName);
+            else
+                return string.Format(@".\Data\users\{0}-CL-{1}", userName, fileName);
         }
     }
 }

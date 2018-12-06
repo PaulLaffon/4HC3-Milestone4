@@ -11,6 +11,7 @@ namespace Milestone4.ViewModel
         Welcome,
         Profile,
         Browse,
+        SeeJob,
         Apply,
         AppliedJobs,
         SavedJobs,

@@ -64,6 +64,7 @@
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\StateToVisibilityConverter.cs" />
     <Compile Include="ViewModel\SystemState.cs" />
+    <Compile Include="ViewModel\UserFileVM.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="View\AppliedJobsView.xaml.cs">
@@ -75,12 +76,21 @@
     <Compile Include="View\BrowseJobView.xaml.cs">
       <DependentUpon>BrowseJobView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\JobView.xaml.cs">
+      <DependentUpon>JobView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="View\SavedJobView.xaml.cs">
+      <DependentUpon>SavedJobView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserFilesView.xaml.cs">
+      <DependentUpon>UserFilesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\WelcomeView.xaml.cs">
       <DependentUpon>WelcomeView.xaml</DependentUpon>
@@ -97,7 +107,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\JobView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SavedJobView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserFilesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
