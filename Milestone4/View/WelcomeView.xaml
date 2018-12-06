@@ -104,7 +104,7 @@
             <Run Text="The hottest jobs in your area !" FontSize="18"/>
         </TextBlock>
 
-        <Grid Grid.Row="1"
+        <Grid Grid.Row="1" Visibility="Collapsed"
               Margin="20,20,20,0"
               MinWidth="400"
               MaxWidth="550"
@@ -199,7 +199,7 @@
 
         </Grid>
 
-        <Grid Grid.Row="2" Grid.Column="1"
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
               Margin="20,20,20,0"
               MinWidth="400"
               MaxWidth="550"

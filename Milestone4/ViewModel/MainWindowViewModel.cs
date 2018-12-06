@@ -5,9 +5,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -18,7 +16,7 @@ namespace Milestone4.ViewModel
         private static Regex EmailRegex = new Regex(@"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$");
         private WebsiteData data;
         private UserViewModel userVM;
-        private ObservableCollection<Job> jobsToDisplay;
+        private List<Job> jobsToDisplay;
         private ObservableCollection<Job> appliedJobs;
         private Job selectedJob;
         private Job uniqJobToDisplay;
@@ -33,6 +31,7 @@ namespace Milestone4.ViewModel
         private string email = "";
         private string errorMessage = "";
         public string comment = "";
+        public string searchValue = "";
 
         public SystemState State
         {
@@ -174,7 +173,7 @@ namespace Milestone4.ViewModel
 
         public bool IsCurrentJobSaved
         {
-            get { return UserVM != null ? UserVM.ManagedUser.SavedJobs.FirstOrDefault(j=>j.Id == SelectedJob.Id) != null : false; }
+            get { return UserVM != null ? UserVM.ManagedUser.SavedJobs.FirstOrDefault(j => j.Id == SelectedJob.Id) != null : false; }
         }
 
         public bool IsUniqJobSaved
@@ -185,7 +184,7 @@ namespace Milestone4.ViewModel
         public Visibility JobDetailsVisibility { get { return SelectedJob == null ? Visibility.Collapsed : Visibility.Visible; } }
         public Visibility JobDMessageVisibility { get { return SelectedJob == null ? Visibility.Visible : Visibility.Collapsed; } }
 
-        public ObservableCollection<Job> JobsToDisplay
+        public List<Job> JobsToDisplay
         {
             get { return jobsToDisplay; }
             set
@@ -202,14 +201,29 @@ namespace Milestone4.ViewModel
         public bool AlreadyApplied { get { return UserVM != null ? UserVM.ManagedUser.JobApplied.FirstOrDefault(j => j.JobId == SelectedJob.Id) != null : false; } }
         public bool UniqAlreadyApplied { get { return UserVM != null ? UserVM.ManagedUser.JobApplied.FirstOrDefault(j => j.JobId == UniqJobToDisplay.Id) != null : false; } }
 
+        #region Search
+        public string SearchValue
+        {
+            get { return searchValue; }
+            set
+            {
+                searchValue = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
         #region Commands
-        public ICommand ProfileCommand { get { return new ButtonCommand(()=> { State = SystemState.Profile; }); } }
-        public ICommand BrowseCommand { get { return new ButtonCommand(()=> { State = SystemState.Browse; }); } }
+        public ICommand ProfileCommand { get { return new ButtonCommand(() => { State = SystemState.Profile; }); } }
+        public ICommand BrowseCommand { get { return new ButtonCommand(() => { State = SystemState.Browse; }); } }
         public ICommand ApplyViewCommand { get { return new ButtonCommand(() => { JobApplyingTo = SelectedJob; State = SystemState.Apply; }); } }
         public ICommand UniqApplyViewCommand { get { return new ButtonCommand(() => { JobApplyingTo = UniqJobToDisplay; State = SystemState.Apply; }); } }
         public ICommand AppliedJobsCommand { get { return new ButtonCommand(() => { State = SystemState.AppliedJobs; }); } }
         public ICommand SavedJobsCommand { get { return new ButtonCommand(() => { State = SystemState.SavedJobs; }); } }
         public ICommand FilesCommand { get { return new ButtonCommand(() => { State = SystemState.Files; }); } }
+
+        public ICommand SearchCommand { get { return new ButtonCommand(Search); } }
 
         public ICommand LogCommand { get { return new ButtonCommand(Log); } }
         public ICommand RegisterCommand { get { return new ButtonCommand(Register); } }
@@ -242,12 +256,54 @@ namespace Milestone4.ViewModel
         public ICommand AddNewCLCommand { get { return new ButtonCommand(AddNewCoverLetter); } }
         #endregion
 
+        #region Filters
+        public List<FilterViewModel> JobTypeFilters { get; private set; }
+        public List<FilterViewModel> SalaryFilters { get; private set; }
+        public List<FilterViewModel> LevelFilters { get; private set; }
+        public List<FilterViewModel> CategoryFilters { get; private set; }
+        public List<FilterViewModel> CompanyFilters { get; private set; }
+        public List<FilterViewModel> CityFilters { get; private set; }
+
+        public void InitializeFilters()
+        {
+            JobTypeFilters = new List<FilterViewModel>();
+            JobTypeFilters.Add(new FilterViewModel(this, "Type", "Job type", false));
+            JobTypeFilters.AddRange(FilterViewModel.TypeFilterValues.Select(val => new FilterViewModel(this, "Type", val)));
+
+            SalaryFilters = new List<FilterViewModel>();
+            SalaryFilters.Add(new FilterViewModel(this, "Salary", "Salary", false));
+            SalaryFilters.AddRange(FilterViewModel.SalaryFilterValues.Select(val => new FilterViewModel(this, "Salary", val)));
+
+            LevelFilters = new List<FilterViewModel>();
+            LevelFilters.Add(new FilterViewModel(this, "Level", "Level", false));
+            LevelFilters.AddRange(FilterViewModel.LevelFilterValues.Select(val => new FilterViewModel(this, "Level", val)));
+
+            CategoryFilters = new List<FilterViewModel>();
+            CategoryFilters.Add(new FilterViewModel(this, "Category", "Category", false));
+            CategoryFilters.AddRange(FilterViewModel.CategoryFilterValues.Select(val => new FilterViewModel(this, "Category", val)));
+
+            CompanyFilters = new List<FilterViewModel>();
+            CompanyFilters.Add(new FilterViewModel(this, "Company", "Company", false));
+            CompanyFilters.AddRange(FilterViewModel.CompanyFilterValues.Select(val => new FilterViewModel(this, "Company", val)));
+
+            CityFilters = new List<FilterViewModel>();
+            CityFilters.Add(new FilterViewModel(this, "City", "City", false));
+            CityFilters.AddRange(FilterViewModel.LocationFilterValues.Select(val => new FilterViewModel(this, "City", val)));
+        }
+        #endregion
+
         public MainWindowViewModel(WebsiteData data)
         {
             this.data = data;
             State = SystemState.Welcome;
-            JobsToDisplay = new ObservableCollection<Job>(data.Jobs);
+            JobsToDisplay = new List<Job>(data.Jobs);
             UserVM = null;
+            InitializeFilters();
+        }
+
+        public void Search()
+        {
+            JobsToDisplay = new List<Job>(data.Jobs.Where(j => j.Title.ToLower().Contains(SearchValue.ToLower()) || j.Description.ToLower().Contains(SearchValue.ToLower())));
         }
 
         public void SeeJob(Job j)

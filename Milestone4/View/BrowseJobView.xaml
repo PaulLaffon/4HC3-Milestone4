@@ -108,13 +108,13 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0" Margin="20,5" Background="White"/>
             <TextBox Grid.Column="0"
                      Margin="20,5"
                      Padding="40,10,10,10"
-                     Text="">
+                     Text="{Binding SearchValue}">
                 <TextBox.Style>
                     <Style TargetType="{x:Type TextBox}">
                         <Style.Resources>
@@ -150,15 +150,9 @@
                     </Style>
                 </TextBox.Style>
             </TextBox>
-            <ComboBox Grid.Column="1"
-                      Background="White"
-                      Margin="20,5"
-                      Padding="10"
-                      SelectedIndex="0">
-            </ComboBox>
-            <Border Grid.Column="2" Margin="20,5" Background="White"/>
-            <TextBox Grid.Column="2"
-                     Margin="20,5"
+            <Border Grid.Column="1" Margin="0,5" Background="White"/>
+            <TextBox Grid.Column="1"
+                     Margin="0,5"
                      Padding="40,10,10,10"
                      Text="">
                 <TextBox.Style>
@@ -196,29 +190,29 @@
                     </Style>
                 </TextBox.Style>
             </TextBox>
-            
-            <ItemsControl Grid.Row="1" Grid.ColumnSpan="3"
-                          Margin="10,5">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel IsItemsHost="True"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.Resources>
+
+            <Button Grid.Row="0" Grid.Column="2"
+                    Margin="20,5"
+                    Content="Search"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Cursor="Hand"
+                    Command="{Binding SearchCommand}">
+                <Button.Style>
                     <Style TargetType="{x:Type Button}">
-                        <Setter Property="Foreground" Value="Black"/>
+                        <Setter Property="Foreground" Value="White"/>
                         <Setter Property="FontSize" Value="14"/>
                         <Setter Property="FontWeight" Value="Normal"/>
-                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Background" Value="#FF499DF4"/>
                         <Setter Property="BorderThickness" Value="0"/>
-                        <Setter Property="BorderBrush" Value="{x:Null}"/>
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="BorderBrush" Value="#FFD2DBDB"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border Padding="2"
-                                            Background="{TemplateBinding Background}">
+                                    <Border Padding="15,10"
+                                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                                        Background="{TemplateBinding Background}"
+                                                        BorderThickness="{TemplateBinding BorderThickness}">
                                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Border>
                                 </ControlTemplate>
@@ -226,25 +220,101 @@
                         </Setter>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Background" Value="#FF76B6F8"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="FontWeight" Value="ExtraBold"/>
+                                <Setter Property="Background" Value="#FF277BD3"/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>
-                </ItemsControl.Resources>
-                <Border Margin="10,5"
-                        Padding="10,0,3,0"
-                        BorderThickness="1"
-                        BorderBrush="#FFC3C3C3">
-                    <DockPanel>
-                        <Button Margin="10,0,0,0" DockPanel.Dock="Right" Content="x"/>
-                        <TextBlock Text="Filter 1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </DockPanel>
-                </Border>
-            </ItemsControl>
-            
+                </Button.Style>
+            </Button>
+
+            <Grid Grid.Row="1" Grid.ColumnSpan="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="{x:Type ComboBox}">
+                        <Setter Property="Margin" Value="10,5,10,10"/>
+                        <Setter Property="Padding" Value="10,5,5,5"/>
+                        <Setter Property="SelectedIndex" Value="0"/>
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="ItemTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Value}"/>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="ItemContainerStyle">
+                            <Setter.Value>
+                                <Style TargetType="{x:Type ComboBoxItem}">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                                    <Setter Property="IsHitTestVisible" Value="True"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Margin" Value="0"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <Border>
+                                                    <CheckBox Margin="5,0,0,0"
+                                                              Padding="5"
+                                                              VerticalAlignment="Stretch"
+                                                              HorizontalAlignment="Stretch"
+                                                              VerticalContentAlignment="Center"
+                                                              IsChecked="{Binding IsSelected}"
+                                                              IsEnabled="True"
+                                                              IsHitTestVisible="True">
+                                                        <TextBlock Text="{Binding Value}"/>
+                                                    </CheckBox>
+                                                    <Border.Style>
+                                                        <Style TargetType="{x:Type Border}">
+                                                            <Setter Property="Background" Value="White"/>
+                                                            <Style.Triggers>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Background" Value="WhiteSmoke"/>
+                                                                </Trigger>
+                                                                <DataTrigger Binding="{Binding IsSelectable}" Value="False">
+                                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    <Style TargetType="{x:Type TextBlock}" x:Key="TextBlockLabel">
+                        <Setter Property="Margin" Value="30,0,0,0"/>
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                </Grid.Resources>
+
+                <ComboBox Grid.Column="0"
+                          ItemsSource="{Binding JobTypeFilters}"/>
+                <ComboBox Grid.Column="1"
+                          ItemsSource="{Binding SalaryFilters}"/>
+                <ComboBox Grid.Column="2"
+                          ItemsSource="{Binding LevelFilters}"/>
+                <ComboBox Grid.Column="3"
+                          ItemsSource="{Binding CategoryFilters}"/>
+                <ComboBox Grid.Column="4"
+                          ItemsSource="{Binding CompanyFilters}"/>
+                <ComboBox Grid.Column="5"
+                          ItemsSource="{Binding CityFilters}"/>
+            </Grid>
         </Grid>
         <ListBox Grid.Row="1"
                  x:Name="JobListBox"
@@ -357,9 +427,9 @@
                                     </Style.Triggers>
                                 </Style>
                             </Button.Style>
-                            
+
                         </Button>
-                        
+
                         <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
@@ -417,5 +487,6 @@
                 </Border>
             </DockPanel>
         </ScrollViewer>
+
     </Grid>
 </UserControl>
