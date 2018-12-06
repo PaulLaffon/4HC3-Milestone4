@@ -201,6 +201,25 @@ namespace Milestone4.ViewModel
         public bool AlreadyApplied { get { return UserVM != null ? UserVM.ManagedUser.JobApplied.FirstOrDefault(j => j.JobId == SelectedJob.Id) != null : false; } }
         public bool UniqAlreadyApplied { get { return UserVM != null ? UserVM.ManagedUser.JobApplied.FirstOrDefault(j => j.JobId == UniqJobToDisplay.Id) != null : false; } }
 
+        #region Profiles
+        private Visibility editProfileVisibility;
+        public Visibility EditProfileVisibility
+        {
+            get { return editProfileVisibility; }
+            set
+            {
+                editProfileVisibility = value;
+                OnPropertyChanged();
+                OnPropertyChanged("SaveProfileVisibility");
+            }
+        }
+
+        public Visibility SaveProfileVisibility
+        {
+            get { return EditProfileVisibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible; }
+        }
+        #endregion
+
         #region Search
         public string SearchValue
         {
@@ -224,6 +243,12 @@ namespace Milestone4.ViewModel
         public ICommand FilesCommand { get { return new ButtonCommand(() => { State = SystemState.Files; }); } }
 
         public ICommand SearchCommand { get { return new ButtonCommand(Search); } }
+
+        public ICommand EditProfileCommand { get { return new ButtonCommand(() => { EditProfileVisibility = Visibility.Collapsed; }); } }
+        public ICommand SaveProfileCommand { get { return new ButtonCommand(() => {
+            UserVM.SaveProfile();
+            EditProfileVisibility = Visibility.Visible;
+        }); } }
 
         public ICommand LogCommand { get { return new ButtonCommand(Log); } }
         public ICommand RegisterCommand { get { return new ButtonCommand(Register); } }
@@ -268,28 +293,59 @@ namespace Milestone4.ViewModel
         {
             JobTypeFilters = new List<FilterViewModel>();
             JobTypeFilters.Add(new FilterViewModel(this, "Type", "Job type", false));
+            JobTypeFilters.Add(new FilterViewModel(this, "Type", "All"));
             JobTypeFilters.AddRange(FilterViewModel.TypeFilterValues.Select(val => new FilterViewModel(this, "Type", val)));
 
             SalaryFilters = new List<FilterViewModel>();
             SalaryFilters.Add(new FilterViewModel(this, "Salary", "Salary", false));
+            SalaryFilters.Add(new FilterViewModel(this, "Salary", "All"));
             SalaryFilters.AddRange(FilterViewModel.SalaryFilterValues.Select(val => new FilterViewModel(this, "Salary", val)));
 
             LevelFilters = new List<FilterViewModel>();
             LevelFilters.Add(new FilterViewModel(this, "Level", "Level", false));
+            LevelFilters.Add(new FilterViewModel(this, "Level", "All"));
             LevelFilters.AddRange(FilterViewModel.LevelFilterValues.Select(val => new FilterViewModel(this, "Level", val)));
 
             CategoryFilters = new List<FilterViewModel>();
             CategoryFilters.Add(new FilterViewModel(this, "Category", "Category", false));
+            CategoryFilters.Add(new FilterViewModel(this, "Category", "All"));
             CategoryFilters.AddRange(FilterViewModel.CategoryFilterValues.Select(val => new FilterViewModel(this, "Category", val)));
 
             CompanyFilters = new List<FilterViewModel>();
             CompanyFilters.Add(new FilterViewModel(this, "Company", "Company", false));
+            CompanyFilters.Add(new FilterViewModel(this, "Company", "All"));
             CompanyFilters.AddRange(FilterViewModel.CompanyFilterValues.Select(val => new FilterViewModel(this, "Company", val)));
 
             CityFilters = new List<FilterViewModel>();
             CityFilters.Add(new FilterViewModel(this, "City", "City", false));
+            CityFilters.Add(new FilterViewModel(this, "City", "All"));
             CityFilters.AddRange(FilterViewModel.LocationFilterValues.Select(val => new FilterViewModel(this, "City", val)));
         }
+
+        private List<FilterViewModel> GetListByType(string type)
+        {
+            if (type == "Type") return JobTypeFilters;
+            if (type == "Salary") return SalaryFilters;
+            if (type == "Level") return LevelFilters;
+            if (type == "Category") return CategoryFilters;
+            if (type == "Company") return CompanyFilters;
+            return CityFilters;
+        }
+
+        public void SelectAllChanged(string type, bool isSelected)
+        {
+            var list = GetListByType(type);
+            foreach (var filter in list)
+                filter.IsSelectedWithoutEvent = isSelected;
+        }
+
+        public void ManageSelectAllStatus(string type)
+        {
+            var list = GetListByType(type);
+            var fAll = list[1];
+            fAll.IsSelectedWithoutEvent = list.Where(f => f.IsSelectable && f.Value != "All").All(f => f.IsSelected);
+        }
+
         #endregion
 
         public MainWindowViewModel(WebsiteData data)
@@ -299,11 +355,18 @@ namespace Milestone4.ViewModel
             JobsToDisplay = new List<Job>(data.Jobs);
             UserVM = null;
             InitializeFilters();
+            EditProfileVisibility = Visibility.Visible;
         }
 
         public void Search()
         {
-            JobsToDisplay = new List<Job>(data.Jobs.Where(j => j.Title.ToLower().Contains(SearchValue.ToLower()) || j.Description.ToLower().Contains(SearchValue.ToLower())));
+            var salaries = SalaryFilters.Where(f => f.IsSelected && f.IsSelectable && f.Value != "All").Select(f => f.Value).ToList();
+            var companies = CompanyFilters.Where(f => f.IsSelected && f.IsSelectable && f.Value != "All").Select(f => f.Value).ToList();
+            var levels = LevelFilters.Where(f => f.IsSelected && f.IsSelectable && f.Value != "All").Select(f => f.Value).ToList();
+            var cities = CityFilters.Where(f => f.IsSelected && f.IsSelectable && f.Value != "All").Select(f => f.Value).ToList();
+            var categories = CategoryFilters.Where(f => f.IsSelected && f.IsSelectable && f.Value != "All").Select(f => f.Value).ToList();
+            var types = JobTypeFilters.Where(f => f.IsSelected && f.IsSelectable && f.Value != "All").Select(f => f.Value).ToList();
+            JobsToDisplay = data.Search(SearchValue, salaries, companies, levels, cities, categories, types);
         }
 
         public void SeeJob(Job j)
@@ -319,10 +382,10 @@ namespace Milestone4.ViewModel
             {
                 UserVM = new UserViewModel(this, user);
                 State = SystemState.Browse;
+                ErrorMessage = null;
             }
             else
                 ErrorMessage = "Authentication failed, please try again";
-            ErrorMessage = null;
         }
 
         private void Register()
@@ -338,19 +401,24 @@ namespace Milestone4.ViewModel
                 ErrorMessage = "Enter a username";
                 return;
             }
-            if (string.IsNullOrWhiteSpace(Email) || !EmailRegex.IsMatch(Email))
-            {
-                ErrorMessage = "Enter a valid email";
-                return;
-            }
             if (UserName.Replace(" ", "") != UserName)
             {
                 ErrorMessage = "Unallowed characters in username";
                 return;
             }
-            if (string.IsNullOrEmpty(Password) || Password != PasswordConfirmation)
+            if (string.IsNullOrEmpty(Password))
+            {
+                ErrorMessage = "Enter a password";
+                return;
+            }
+            if (Password != PasswordConfirmation)
             {
                 ErrorMessage = "Password confirmation failed";
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(Email) || !EmailRegex.IsMatch(Email))
+            {
+                ErrorMessage = "Enter a valid email";
                 return;
             }
             user = new User() { Name = UserName, Password = Password };
@@ -365,7 +433,7 @@ namespace Milestone4.ViewModel
         {
             if(UserVM.SelectedResume == null)
             {
-                ErrorMessage = "Please use the dropdown to pick up a resume";
+                ErrorMessage = "Please use the dropdown to pick up a resume or upload a new one.";
                 return;
             }
             if(UserVM.SelectedCoverLetter == null)

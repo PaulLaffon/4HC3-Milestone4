@@ -23,6 +23,7 @@
                         <TextBlock TextTrimming="CharacterEllipsis"
                                    FontSize="12">
                             <Run Text="{Binding NbDaysToApply, Mode=OneWay}" FontSize="10"/>
+                            <Run Text="days to apply"/>
                             <LineBreak/>
                             <Run Text="{Binding Title}" FontSize="14" FontWeight="DemiBold" ToolTip="{Binding Title}"/>
                             <LineBreak/>
@@ -114,7 +115,8 @@
             <TextBox Grid.Column="0"
                      Margin="20,5"
                      Padding="40,10,10,10"
-                     Text="{Binding SearchValue}">
+                     Text="{Binding SearchValue}"
+                     KeyDown="SearchTextKeyDownHandler">
                 <TextBox.Style>
                     <Style TargetType="{x:Type TextBox}">
                         <Style.Resources>
@@ -192,6 +194,7 @@
             </TextBox>
 
             <Button Grid.Row="0" Grid.Column="2"
+                    x:Name="SearchButton"
                     Margin="20,5"
                     Content="Search"
                     VerticalAlignment="Center"
@@ -270,8 +273,7 @@
                                                               HorizontalAlignment="Stretch"
                                                               VerticalContentAlignment="Center"
                                                               IsChecked="{Binding IsSelected}"
-                                                              IsEnabled="True"
-                                                              IsHitTestVisible="True">
+                                                              IsEnabled="True">
                                                         <TextBlock Text="{Binding Value}"/>
                                                     </CheckBox>
                                                     <Border.Style>
@@ -303,7 +305,8 @@
                 </Grid.Resources>
 
                 <ComboBox Grid.Column="0"
-                          ItemsSource="{Binding JobTypeFilters}"/>
+                          ItemsSource="{Binding JobTypeFilters}"
+                          SelectionChanged="ComboBox_SelectionChanged"/>
                 <ComboBox Grid.Column="1"
                           ItemsSource="{Binding SalaryFilters}"/>
                 <ComboBox Grid.Column="2"
@@ -328,10 +331,11 @@
                    TextAlignment="Center"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
-                   FontSize="16"
+                   FontSize="15"
                    FontStyle="Italic"
+                   FontWeight="Bold"
                    Visibility="{Binding JobDMessageVisibility}">
-            <Run Text="No jobs found for your search"/>
+            <Run Text="No jobs found for your search :("/>
         </TextBlock>
 
         <ScrollViewer Grid.Row="1" Grid.Column="1"
@@ -478,9 +482,10 @@
                         </Button>
                     </Grid>
                 </Border>
+                
                 <Border BorderThickness="1"
                         BorderBrush="Gray">
-                    <TextBlock Margin="10"
+                    <TextBlock Margin="30"
                            TextWrapping="Wrap"
                            TextAlignment="Justify"
                            Text="{Binding SelectedItem.Description, ElementName=JobListBox}"/>

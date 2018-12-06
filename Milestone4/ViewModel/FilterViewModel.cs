@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Milestone4.Model;
 
 namespace Milestone4.ViewModel
@@ -51,6 +48,21 @@ namespace Milestone4.ViewModel
             {
                 isSelected = value;
                 OnPropertyChanged();
+                if (Value == "All")
+                    mainVM.SelectAllChanged(Type, isSelected);
+                else
+                    mainVM.ManageSelectAllStatus(Type);
+                mainVM.Search();
+            }
+        }
+
+        public bool IsSelectedWithoutEvent
+        {
+            get { return isSelected; }
+            set
+            {
+                isSelected = value;
+                OnPropertyChanged("IsSelected");
             }
         }
 
@@ -60,7 +72,7 @@ namespace Milestone4.ViewModel
             IsSelectable = isSelectable;
             Type = type;
             Value = value;
-            IsSelected = true;
+            isSelected = true;
         }
     }
 }

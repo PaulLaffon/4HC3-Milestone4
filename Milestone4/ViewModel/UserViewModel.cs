@@ -1,6 +1,5 @@
 ﻿using Milestone4.Model;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System;
 
@@ -11,6 +10,11 @@ namespace Milestone4.ViewModel
         private MainWindowViewModel mainVM;
         private UserFileVM selectedResume;
         private UserFileVM selectedCoverLetter;
+        private string stringName;
+        private string description;
+        private string experiences;
+        private string studies;
+        private string projects;
 
         public User ManagedUser { get; private set; }
 
@@ -34,6 +38,52 @@ namespace Milestone4.ViewModel
             }
         }
 
+        public string StringName
+        {
+            get { return stringName; }
+            set
+            {
+                stringName = value;
+                OnPropertyChanged();
+            }
+        }
+        public string Description
+        {
+            get { return description; }
+            set
+            {
+                description = value;
+                OnPropertyChanged();
+            }
+        }
+        public string Experiences
+        {
+            get { return experiences; }
+            set
+            {
+                experiences = value;
+                OnPropertyChanged();
+            }
+        }
+        public string Studies
+        {
+            get { return studies; }
+            set
+            {
+                studies = value;
+                OnPropertyChanged();
+            }
+        }
+        public string Projects
+        {
+            get { return projects; }
+            set
+            {
+                projects = value;
+                OnPropertyChanged();
+            }
+        }
+
         public List<JobApplied> JobsApplied { get; private set; }
         public List<Job> SavedJobs { get; private set; }
         public List<UserFileVM> Resumes { get; private set; }
@@ -48,6 +98,20 @@ namespace Milestone4.ViewModel
             UpdateJobsSaved();
             selectedResume = null;
             selectedCoverLetter = null;
+            stringName = ManagedUser.StringName;
+            description = ManagedUser.Description;
+            experiences = ManagedUser.Experiences;
+            studies = ManagedUser.Studies;
+            projects = ManagedUser.Projects;
+        }
+
+        public void SaveProfile()
+        {
+            ManagedUser.StringName = StringName;
+            ManagedUser.Description = Description;
+            ManagedUser.Experiences = Experiences;
+            ManagedUser.Studies = Studies;
+            ManagedUser.Projects = Projects;
         }
 
         public static string Extract(string filename)
