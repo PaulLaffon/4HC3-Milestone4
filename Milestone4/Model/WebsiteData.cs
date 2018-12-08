@@ -60,7 +60,10 @@ namespace Milestone4.Model
                 matchingCurr = matchingCurr.Union(Jobs.Where(j => j.Salary <= upper && j.Salary >= lower));
             }
 
-            foreach(string company in companies)
+            matching = matching.Intersect(matchingCurr);
+            matchingCurr = new List<Job>();
+
+            foreach (string company in companies)
             {
                 matchingCurr = matchingCurr.Union(Jobs.Where(j => j.CompanyName.Contains(company)));
             }
