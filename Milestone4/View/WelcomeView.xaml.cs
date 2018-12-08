@@ -31,6 +31,7 @@ namespace Milestone4.View
             //BrowseGrid
             QuickSearchButton.IsEnabled = true;
             QuickSearchGrid.Visibility = Visibility.Collapsed;
+            ErrorMsg.SetValue(TextBlock.TextProperty, null);
         }
 
         private void QuickSearchButton_Click(object sender, RoutedEventArgs e)
@@ -39,6 +40,7 @@ namespace Milestone4.View
             //BrowseGrid
             QuickSearchButton.IsEnabled = false;
             QuickSearchGrid.Visibility = Visibility.Visible;
+            ErrorMsg.SetValue(TextBlock.TextProperty, null);
         }
 
         private void CreateProfButton_Click(object sender, RoutedEventArgs e)
@@ -47,6 +49,7 @@ namespace Milestone4.View
             CreateProfGrid.Visibility = Visibility.Visible;
             SignInButton.IsEnabled = true;
             SignInGrid.Visibility = Visibility.Collapsed;
+            ErrorMsg.SetValue(TextBlock.TextProperty, null);
         }
 
         private void SignInButton_Click(object sender, RoutedEventArgs e)
@@ -55,6 +58,7 @@ namespace Milestone4.View
             CreateProfGrid.Visibility = Visibility.Collapsed;
             SignInButton.IsEnabled = false;
             SignInGrid.Visibility = Visibility.Visible;
+            ErrorMsg.SetValue(TextBlock.TextProperty, null);
         }
 
         private void PasswordChanged(object sender, RoutedEventArgs e)

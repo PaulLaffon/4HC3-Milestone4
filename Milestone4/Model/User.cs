@@ -5,6 +5,12 @@ namespace Milestone4.Model
     public class User
     {
         public string Name { get; set; }
+        public string StringName {get; set;}
+        public string Description {get; set; }
+        public string Experiences {get; set; }
+        public string Studies {get; set; }
+        public string Projects {get; set; }
+
         public string Password { get; set; }
         public List<JobApplied> JobApplied { get; set; }
         public List<Job> SavedJobs { get; set; }
@@ -20,6 +26,12 @@ namespace Milestone4.Model
             SavedJobs = new List<Job>();
             Resumes = new List<string>();
             CoverLetters = new List<string>();
+            Description = "- Description -";
+            StringName = "- FirstName LastName -";
+            Experiences = "- Describe your experiences -";
+            Studies = "- Describe your studies -";
+            Projects = "- Describe your projects -";
+
         }
     }
 }

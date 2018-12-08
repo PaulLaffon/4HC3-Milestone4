@@ -147,6 +147,10 @@
             <local:BrowseJobView Visibility="{Binding State, Converter={StaticResource stateConverter}, ConverterParameter={x:Static viewmodel:SystemState.Browse}}"/>
             <local:ApplyView Visibility="{Binding State, Converter={StaticResource stateConverter}, ConverterParameter={x:Static viewmodel:SystemState.Apply}}"/>
             <local:AppliedJobsView Visibility="{Binding State, Converter={StaticResource stateConverter}, ConverterParameter={x:Static viewmodel:SystemState.AppliedJobs}}"/>
+            <local:SavedJobView Visibility="{Binding State, Converter={StaticResource stateConverter}, ConverterParameter={x:Static viewmodel:SystemState.SavedJobs}}"/>
+            <local:UserFilesView Visibility="{Binding State, Converter={StaticResource stateConverter}, ConverterParameter={x:Static viewmodel:SystemState.Files}}"/>
+            <local:JobView Visibility="{Binding State, Converter={StaticResource stateConverter}, ConverterParameter={x:Static viewmodel:SystemState.SeeJob}}"/>
+            <local:ProfileView Visibility="{Binding State, Converter={StaticResource stateConverter}, ConverterParameter={x:Static viewmodel:SystemState.Profile}}"/>
 
         </Grid>
     </DockPanel>

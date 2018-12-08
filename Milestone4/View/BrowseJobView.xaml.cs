@@ -27,6 +27,30 @@ namespace Milestone4.View
         {
             InitializeComponent();
         }
+
+        private bool handleSelect = true;
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (handleSelect && e.RemovedItems.Count > 0)
+                {
+                    ComboBox combo = (ComboBox)sender;
+                    handleSelect = false;
+                    combo.SelectedItem = e.RemovedItems[0];
+                }
+                handleSelect = true;
+            }
+            catch { }
+        }
+
+        private void SearchTextKeyDownHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                SearchButton.Command.Execute(null);
+            }
+        }
     }
 }
 

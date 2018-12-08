@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Windows.Input;
+using System.Xml.Serialization;
 
 namespace Milestone4.Model
 {
@@ -25,6 +27,14 @@ namespace Milestone4.Model
             "Hamilton", "Toronto", "Waterloo", "London", "Montreal", "Windsor", "Vancouver"
         };
 
+        public static string[] Levels = {
+            "Baccalareate", "Master"
+        };
+
+        public static string[] Types = {
+            "Intership", "Intership", "Full Time", "Full Time", "Part Time"
+        };
+
 
         public int Id { get; set; }
         public string Title { get; set; }
@@ -43,6 +53,13 @@ namespace Milestone4.Model
         public string Logo { get; set; }
         public string LogoUri { get { return string.Format(@"{0}\{1}", Directory.GetCurrentDirectory(), Logo); } }
 
+        #region ViewModel help
+        [XmlIgnore]
+        public ICommand SeeJobCommand { get; set; }
+        [XmlIgnore]
+        public ICommand UnsaveCommand { get; set; }
+        #endregion
+
         public Job(int id, string[] fields)
         {
             int companyIndex = random.Next(0, Job.Companies.Length);
@@ -54,9 +71,9 @@ namespace Milestone4.Model
 
             Id = id;
             Title = fields[4];
-            Type = fields[2];
+            Type = Types[random.Next(0, Types.Length)];
             Salary = (int)salary;
-            Level = fields[16];
+            Level = Levels[random.Next(0, Levels.Length)];
             YearOfExperience = random.Next(0, 6);
             Description = fields[15].Replace("\\n","\n");
             CompanyName = Companies[companyIndex];
